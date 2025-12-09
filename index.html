@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PhiloSphere - Wisdom of the Ages</title>
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <script>
       tailwind.config = {
         theme: {
@@ -15,30 +18,8 @@
               sans: ['"Inter"', 'system-ui', 'sans-serif'],
             },
             colors: {
-              stone: {
-                50: '#fafaf9',
-                100: '#f5f5f4',
-                200: '#e7e5e4',
-                300: '#d6d3d1',
-                400: '#a8a29e',
-                500: '#78716c',
-                600: '#57534e',
-                700: '#44403c',
-                800: '#292524',
-                900: '#1c1917',
-              },
-              amber: {
-                50: '#fffbeb',
-                100: '#fef3c7',
-                200: '#fde68a',
-                300: '#fcd34d',
-                400: '#fbbf24',
-                500: '#f59e0b',
-                600: '#d97706',
-                700: '#b45309',
-                800: '#92400e',
-                900: '#78350f',
-              },
+              stone: { 50: '#fafaf9', 100: '#f5f5f4', 800: '#292524', 900: '#1c1917' },
+              amber: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706', 700: '#b45309' },
             },
             animation: {
               'fade-in': 'fadeIn 0.5s ease-out',
@@ -54,28 +35,13 @@
       }
     </script>
     <style>
-      /* Custom scrollbar for a cleaner look */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #f5f5f4; 
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #d6d3d1; 
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #a8a29e; 
-      }
-      .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
+      body { -webkit-font-smoothing: antialiased; }
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: #f5f5f4; }
+      ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
     </style>
-  <script type="importmap">
+<script type="importmap">
 {
   "imports": {
     "react": "https://aistudiocdn.com/react@^19.2.1",
@@ -86,455 +52,349 @@
 }
 </script>
 </head>
-  <body class="bg-[#FDFCF8] text-stone-800 font-sans selection:bg-amber-200 selection:text-amber-900 min-h-screen flex flex-col">
-    
+<body class="bg-[#FDFCF8] text-stone-800 font-sans min-h-screen flex flex-col selection:bg-amber-200 selection:text-amber-900">
+
     <!-- Header -->
-    <header class="sticky top-0 z-50 bg-[#FDFCF8]/90 backdrop-blur-md border-b border-stone-200 transition-all duration-300">
-      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3 cursor-pointer" onclick="app.goHome()">
-           <div class="bg-stone-900 p-2 rounded-lg">
-              <!-- Brain Icon -->
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-amber-500">
-                <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z" />
-                <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z" />
-              </svg>
-           </div>
-           <div>
-             <h1 class="text-2xl font-serif font-bold text-stone-900 leading-none tracking-tight">PhiloSphere</h1>
-             <p class="text-xs text-stone-500 font-medium tracking-wide uppercase">Wisdom of the Ages</p>
-           </div>
+    <header class="sticky top-0 z-50 bg-[#FDFCF8]/90 backdrop-blur-md border-b border-stone-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="app.goHome()">
+                <div class="bg-stone-900 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-500">
+                        <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z" />
+                        <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-serif font-bold text-stone-900 leading-none">PhiloSphere</h1>
+                    <p class="text-xs text-stone-500 font-medium tracking-wide uppercase">Wisdom of the Ages</p>
+                </div>
+            </div>
         </div>
-      </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main id="app-container" class="flex-grow relative">
-      <!-- Views will be injected here -->
-    </main>
+    <!-- Main Content Area -->
+    <main id="app-root" class="flex-grow"></main>
 
     <!-- Footer -->
-    <footer class="bg-stone-900 text-stone-400 py-12 mt-auto">
-      <div class="max-w-7xl mx-auto px-6 text-center">
-        <p class="font-serif italic mb-4">"The only true wisdom is in knowing you know nothing."</p>
-        <p class="text-sm opacity-60">&copy; <span id="year"></span> PhiloSphere. Static Edition.</p>
-      </div>
+    <footer class="bg-stone-900 text-stone-400 py-8 mt-auto border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="font-serif italic mb-2">"The only true wisdom is in knowing you know nothing."</p>
+            <p class="text-xs opacity-50">&copy; <span id="year"></span> PhiloSphere. Static Edition.</p>
+        </div>
     </footer>
 
-    <!-- Application Logic & Data -->
+    <!-- Application Logic -->
     <script>
-      // --- HARDCODED DATASET ---
-      const PHILOSOPHERS_DATA = [
-        {
-          id: "socrates",
-          name: "Socrates",
-          tagline: "The unexamined life is not worth living.",
-          era: "Ancient Greece",
-          school: "Classical Greek",
-          bio: "Socrates (470–399 BC) was a Greek philosopher from Athens who is credited as one of the founders of Western philosophy, and as being the first moral philosopher of the Western ethical tradition of thought. Unlike other philosophers of his time, Socrates wrote nothing down. His life and ideas are known to us through the writings of his students, most notably Plato and Xenophon.\n\nHe is best known for the Socratic method, a form of cooperative argumentative dialogue between individuals, based on asking and answering questions to stimulate critical thinking and to draw out ideas and underlying presumptions. He was sentenced to death by drinking hemlock for corrupting the youth of Athens and impiety.",
-          famousWorks: ["Apology (by Plato)", "Crito (by Plato)", "Phaedo (by Plato)"],
-          quotes: [
-            "The unexamined life is not worth living.",
-            "I know that I know nothing.",
-            "Wonder is the beginning of wisdom.",
-            "To find yourself, think for yourself."
-          ],
-          coreIdeas: ["Socratic Method", "Socratic Irony", "Virtue is Knowledge"]
-        },
-        {
-          id: "plato",
-          name: "Plato",
-          tagline: "Philosophy begins in wonder.",
-          era: "Ancient Greece",
-          school: "Platonism",
-          bio: "Plato (428/427 or 424/423 – 348/347 BC) was a philosopher in Classical Greece and the founder of the Academy in Athens, the first institution of higher learning in the Western world. He is widely considered the pivotal figure in the development of Western philosophy. He was a student of Socrates and the teacher of Aristotle.\n\nPlato's philosophy is best known for his 'Theory of Forms', which proposes that the physical world is not as real or true as timeless, absolute, unchangeable ideas. In his most famous work, 'The Republic', he envisions a society governed by philosopher-kings, arguing that those with the greatest wisdom should rule.",
-          famousWorks: ["The Republic", "Symposium", "Phaedrus", "Timaeus"],
-          quotes: [
-            "We can easily forgive a child who is afraid of the dark; the real tragedy of life is when men are afraid of the light.",
-            "Wise men speak because they have something to say; fools because they have to say something.",
-            "Ignorance, the root and stem of all evil.",
-            "Opinion is the medium between knowledge and ignorance."
-          ],
-          coreIdeas: ["Theory of Forms", "Platonic Idealism", "Philosopher King"]
-        },
-        {
-          id: "aristotle",
-          name: "Aristotle",
-          tagline: "We are what we repeatedly do.",
-          era: "Ancient Greece",
-          school: "Peripatetic",
-          bio: "Aristotle (384–322 BC) was a Greek philosopher and polymath during the Classical period in Ancient Greece. Taught by Plato, he was the founder of the Lyceum, the Peripatetic school of philosophy, and the Aristotelian tradition. His writings cover many subjects including physics, biology, zoology, metaphysics, logic, ethics, aesthetics, poetry, theater, music, rhetoric, psychology, linguistics, economics, politics, and government.\n\nAristotle provided a complex synthesis of the various philosophies existing prior to him. It was above all from his teachings that the West inherited its intellectual lexicon, as well as problems and methods of inquiry. Unlike Plato, he emphasized empirical observation and logic, laying the groundwork for the scientific method.",
-          famousWorks: ["Nicomachean Ethics", "Politics", "Metaphysics", "Poetics"],
-          quotes: [
-            "We are what we repeatedly do. Excellence, then, is not an act, but a habit.",
-            "It is the mark of an educated mind to be able to entertain a thought without accepting it.",
-            "Happiness depends upon ourselves.",
-            "Man is by nature a political animal."
-          ],
-          coreIdeas: ["Virtue Ethics", "The Golden Mean", "Empiricism"]
-        },
-        {
-          id: "confucius",
-          name: "Confucius",
-          tagline: "It does not matter how slowly you go as long as you do not stop.",
-          era: "Ancient China",
-          school: "Confucianism",
-          bio: "Confucius (551–479 BC) was a Chinese philosopher and politician of the Spring and Autumn period. The philosophy of Confucius, also known as Confucianism, emphasized personal and governmental morality, correctness of social relationships, justice, kindness, and sincerity. His followers competed successfully with many other schools during the Hundred Schools of Thought era.\n\nConfucius's principles have an establishment in common Chinese tradition and belief. He championed strong family loyalty, ancestor veneration, and respect of elders by their children and of husbands by their wives, recommending family as a basis for ideal government. He espoused the well-known principle 'Do not do unto others what you do not want done to yourself'.",
-          famousWorks: ["The Analects", "The Doctrine of the Mean", "The Great Learning"],
-          quotes: [
-            "It does not matter how slowly you go as long as you do not stop.",
-            "Real knowledge is to know the extent of one's ignorance.",
-            "Our greatest glory is not in never falling, but in rising every time we fall.",
-            "Wheresoever you go, go with all your heart."
-          ],
-          coreIdeas: ["Ren (Benevolence)", "Li (Ritual)", "Filial Piety"]
-        },
-        {
-          id: "laozi",
-          name: "Laozi",
-          tagline: "The journey of a thousand miles begins with a single step.",
-          era: "Ancient China",
-          school: "Taoism",
-          bio: "Laozi (also known as Lao Tzu) was an ancient Chinese philosopher and writer. He is the reputed author of the Tao Te Ching, the founder of philosophical Taoism, and a deity in religious Taoism and traditional Chinese religions. A semi-legendary figure, he is usually dated to around the 6th century BC and reckoned a contemporary of Confucius.\n\nLaozi's philosophy advocates for naturalness, simplicity, and spontaneity. The central concept is the 'Tao' (The Way), an ineffable natural force that guides all things. He taught that one should live in harmony with the Tao by practicing 'Wu Wei' (non-action or effortless action), suggesting that the best way to manage affairs is to let them take their natural course.",
-          famousWorks: ["Tao Te Ching"],
-          quotes: [
-            "The journey of a thousand miles begins with a single step.",
-            "Nature does not hurry, yet everything is accomplished.",
-            "Knowing others is intelligence; knowing yourself is true wisdom.",
-            "When I let go of what I am, I become what I might be."
-          ],
-          coreIdeas: ["Tao (The Way)", "Wu Wei (Non-action)", "Simplicity"]
-        },
-        {
-          id: "kant",
-          name: "Immanuel Kant",
-          tagline: "Act only according to that maxim whereby you can, at the same time, will that it should become a universal law.",
-          era: "Enlightenment",
-          school: "German Idealism",
-          bio: "Immanuel Kant (1724–1804) was a German philosopher and one of the central Enlightenment thinkers. Kant's comprehensive and systematic works in epistemology, metaphysics, ethics, and aesthetics have made him one of the most influential figures in modern Western philosophy. He argued that the human mind creates the structure of human experience.\n\nIn his major work, 'Critique of Pure Reason', Kant attempted to unite reason with experience to move beyond what he took to be failures of traditional philosophy and metaphysics. He is also famous for his moral philosophy based on the 'Categorical Imperative', which asserts that moral obligations are derived from pure reason, independent of observation.",
-          famousWorks: ["Critique of Pure Reason", "Critique of Practical Reason", "Groundwork of the Metaphysics of Morals"],
-          quotes: [
-            "Two things fill the mind with ever new and increasing admiration and awe... the starry heavens above me and the moral law within me.",
-            "Science is organized knowledge. Wisdom is organized life.",
-            "Act only according to that maxim whereby you can, at the same time, will that it should become a universal law.",
-            "Immaturity is the incapacity to use one's intelligence without the guidance of another."
-          ],
-          coreIdeas: ["Categorical Imperative", "Transcendental Idealism", "Synthetic A Priori"]
-        },
-        {
-          id: "nietzsche",
-          name: "Friedrich Nietzsche",
-          tagline: "That which does not kill us makes us stronger.",
-          era: "19th Century",
-          school: "Existentialism",
-          bio: "Friedrich Nietzsche (1844–1900) was a German philosopher, cultural critic, composer, poet, and philologist whose work has exerted a profound influence on modern intellectual history. He began his career as a classical philologist before turning to philosophy. His writing spans philosophical polemics, poetry, cultural criticism, and fiction while displaying a fondness for aphorism and irony.\n\nNietzsche challenged the foundations of Christianity and traditional morality. He introduced concepts such as the 'Übermensch' (Overman), the 'Will to Power', and 'Eternal Recurrence'. His famous proclamation 'God is dead' was a critique of the erosion of traditional moral values in the face of scientific progress.",
-          famousWorks: ["Thus Spoke Zarathustra", "Beyond Good and Evil", "The Genealogy of Morals"],
-          quotes: [
-            "He who has a why to live can bear almost any how.",
-            "That which does not kill us makes us stronger.",
-            "And those who were seen dancing were thought to be insane by those who could not hear the music.",
-            "God is dead. God remains dead. And we have killed him."
-          ],
-          coreIdeas: ["Will to Power", "Übermensch", "Perspectivism"]
-        },
-        {
-          id: "descartes",
-          name: "René Descartes",
-          tagline: "I think, therefore I am.",
-          era: "Modern Philosophy",
-          school: "Rationalism",
-          bio: "René Descartes (1596–1650) was a French philosopher, mathematician, and scientist. He is often called the 'Father of Modern Philosophy'. His refusal to accept previous philosophical authority and his method of doubt laid the foundation for modern rationalism. He was also a key figure in the Scientific Revolution.\n\nDescartes famously employed 'methodological skepticism', doubting everything that could possibly be doubted until he reached a certainty that could not be denied. This led to his famous conclusion 'Cogito, ergo sum' ('I think, therefore I am'). He viewed the mind and body as distinct substances, a view known as Cartesian Dualism.",
-          famousWorks: ["Meditations on First Philosophy", "Discourse on the Method", "Principles of Philosophy"],
-          quotes: [
-            "I think, therefore I am.",
-            "It is not enough to have a good mind; the main thing is to use it well.",
-            "The reading of all good books is like a conversation with the finest minds of past centuries.",
-            "Divide each difficulty into as many parts as is feasible and necessary to resolve it."
-          ],
-          coreIdeas: ["Cartesian Dualism", "Methodological Skepticism", "Rationalism"]
-        },
-        {
-          id: "beauvoir",
-          name: "Simone de Beauvoir",
-          tagline: "One is not born, but rather becomes, a woman.",
-          era: "20th Century",
-          school: "Existentialism / Feminism",
-          bio: "Simone de Beauvoir (1908–1986) was a French existentialist philosopher, writer, social theorist, and feminist activist. Though she did not consider herself a philosopher, she had a significant influence on both feminist existentialism and feminist theory. She was a lifelong partner of Jean-Paul Sartre.\n\nHer most famous work, 'The Second Sex', is a foundational text of modern feminism. In it, she details the oppression of women throughout history and argues that gender is a social construct ('One is not born, but rather becomes, a woman'). She argued for women's liberation and the freedom to define their own lives beyond societal expectations.",
-          famousWorks: ["The Second Sex", "The Ethics of Ambiguity", "She Came to Stay"],
-          quotes: [
-            "One is not born, but rather becomes, a woman.",
-            "I am too intelligent, too demanding, and too resourceful for anyone to be able to take charge of me entirely.",
-            "Change your life today. Don't gamble on the future, act now, without delay.",
-            "Man is defined as a human being and woman as a female - whenever she behaves as a human being she is said to imitate the male."
-          ],
-          coreIdeas: ["Feminist Existentialism", "Social Construction of Gender", "Freedom and Responsibility"]
-        },
-        {
-          id: "marcus",
-          name: "Marcus Aurelius",
-          tagline: "You have power over your mind - not outside events.",
-          era: "Ancient Rome",
-          school: "Stoicism",
-          bio: "Marcus Aurelius (121–180 AD) was Roman emperor from 161 to 180 and a Stoic philosopher. He is the last of the rulers known as the Five Good Emperors. During his reign, he wrote the 'Meditations' in Greek for his own guidance and self-improvement.\n\nHis writings are a major source of our modern understanding of ancient Stoic philosophy. Marcus Aurelius focuses on the denial of emotion, the importance of logic, and the understanding of the nature of the universe. He believed that finding peace comes from within and that we should accept the things we cannot control while mastering our own reactions to them.",
-          famousWorks: ["Meditations"],
-          quotes: [
-            "You have power over your mind - not outside events. Realize this, and you will find strength.",
-            "The happiness of your life depends upon the quality of your thoughts.",
-            "Waste no more time arguing about what a good man should be. Be one.",
-            "Death smiles at us all, but all a man can do is smile back."
-          ],
-          coreIdeas: ["Stoicism", "Self-Discipline", "Cosmopolitanism"]
-        },
-        {
-          id: "hypatia",
-          name: "Hypatia",
-          tagline: "Reserve your right to think, for even to think wrongly is better than not to think at all.",
-          era: "Late Antiquity",
-          school: "Neoplatonism",
-          bio: "Hypatia (c. 350–370 to 415 AD) was a Hellenistic Neoplatonist philosopher, astronomer, and mathematician, who lived in Alexandria, Egypt. She was a prominent thinker of the Neoplatonic school in Alexandria, where she taught philosophy and astronomy. She is the first female mathematician whose life is reasonably well recorded.\n\nShe was known for her great eloquence and learning. Although she was a pagan, she was respected by many Christians and taught students from diverse religious backgrounds. She was tragically murdered by a mob, an event that some historians mark as the end of the classical era of philosophy.",
-          famousWorks: ["Commentary on Arithmetica", "Commentary on Conics", "The Astronomical Canon (Lost)"],
-          quotes: [
-            "Reserve your right to think, for even to think wrongly is better than not to think at all.",
-            "To teach superstitions as truths is a most terrible thing.",
-            "Life is an unfoldment, and the further we travel the more truth we can comprehend.",
-            "Fables should be taught as fables, myths as myths, and miracles as poetic fantasies."
-          ],
-          coreIdeas: ["Neoplatonism", "Mathematics as Divine", "Intellectual Freedom"]
-        },
-        {
-          id: "hume",
-          name: "David Hume",
-          tagline: "Reason is, and ought only to be the slave of the passions.",
-          era: "Enlightenment",
-          school: "Empiricism",
-          bio: "David Hume (1711–1776) was a Scottish Enlightenment philosopher, historian, economist, librarian and essayist, who is best known today for his highly influential system of philosophical empiricism, skepticism, and naturalism. He argued that all human knowledge derives solely from experience.\n\nHume is famous for asserting that 'reason is, and ought only to be the slave of the passions', implying that logic alone cannot dictate action; desire must also be present. He also challenged the notion of cause and effect, suggesting it is merely a habit of association in the mind rather than a force of nature.",
-          famousWorks: ["A Treatise of Human Nature", "An Enquiry Concerning Human Understanding", "Dialogues Concerning Natural Religion"],
-          quotes: [
-            "Reason is, and ought only to be the slave of the passions.",
-            "Beauty in things exists in the mind which contemplates them.",
-            "A wise man proportions his belief to the evidence.",
-            "The life of man is of no greater importance to the universe than that of an oyster."
-          ],
-          coreIdeas: ["Empiricism", "Problem of Induction", "Bundle Theory of Self"]
-        }
-      ];
+        // --- DATASET (Hardcoded, no API) ---
+        const PHILOSOPHERS = [
+            {
+                id: "socrates",
+                name: "Socrates",
+                era: "Ancient Greece",
+                school: "Classical Greek",
+                tagline: "The unexamined life is not worth living.",
+                bio: "Socrates (470–399 BC) was a Greek philosopher from Athens who is credited as one of the founders of Western philosophy. Unlike other philosophers of his time, Socrates wrote nothing down. His life and ideas are known to us through the writings of his students, most notably Plato.\n\nHe is best known for the Socratic method, a form of cooperative argumentative dialogue between individuals, based on asking and answering questions to stimulate critical thinking.",
+                works: ["Apology (by Plato)", "Crito (by Plato)", "Phaedo (by Plato)"],
+                quotes: [
+                    "The unexamined life is not worth living.",
+                    "I know that I know nothing.",
+                    "Wonder is the beginning of wisdom.",
+                    "To find yourself, think for yourself."
+                ],
+                ideas: ["Socratic Method", "Virtue is Knowledge", "Irony"]
+            },
+            {
+                id: "confucius",
+                name: "Confucius",
+                era: "Ancient China",
+                school: "Confucianism",
+                tagline: "It does not matter how slowly you go as long as you do not stop.",
+                bio: "Confucius (551–479 BC) was a Chinese philosopher and politician. His philosophy emphasized personal and governmental morality, correctness of social relationships, justice, kindness, and sincerity.\n\nHe championed strong family loyalty, ancestor veneration, and respect of elders. His principles have a foundation in common Chinese tradition and belief.",
+                works: ["The Analects", "The Doctrine of the Mean", "The Great Learning"],
+                quotes: [
+                    "It does not matter how slowly you go as long as you do not stop.",
+                    "Real knowledge is to know the extent of one's ignorance.",
+                    "Our greatest glory is not in never falling, but in rising every time we fall.",
+                    "Wheresoever you go, go with all your heart."
+                ],
+                ideas: ["Ren (Benevolence)", "Li (Ritual)", "Filial Piety"]
+            },
+            {
+                id: "nietzsche",
+                name: "Friedrich Nietzsche",
+                era: "19th Century",
+                school: "Existentialism",
+                tagline: "That which does not kill us makes us stronger.",
+                bio: "Friedrich Nietzsche (1844–1900) was a German philosopher, cultural critic, and poet. His work has exerted a profound influence on modern intellectual history. He challenged the foundations of Christianity and traditional morality.\n\nHe introduced concepts such as the 'Übermensch' (Overman) and the 'Will to Power'. His famous proclamation 'God is dead' was a critique of the erosion of traditional moral values.",
+                works: ["Thus Spoke Zarathustra", "Beyond Good and Evil", "The Genealogy of Morals"],
+                quotes: [
+                    "He who has a why to live can bear almost any how.",
+                    "That which does not kill us makes us stronger.",
+                    "And those who were seen dancing were thought to be insane by those who could not hear the music.",
+                    "God is dead. God remains dead. And we have killed him."
+                ],
+                ideas: ["Will to Power", "Übermensch", "Perspectivism"]
+            },
+            {
+                id: "beauvoir",
+                name: "Simone de Beauvoir",
+                era: "20th Century",
+                school: "Existentialism",
+                tagline: "One is not born, but rather becomes, a woman.",
+                bio: "Simone de Beauvoir (1908–1986) was a French existentialist philosopher, writer, and feminist activist. Her most famous work, 'The Second Sex', is a foundational text of modern feminism.\n\nShe argued that gender is a social construct and advocated for women's liberation and the freedom to define their own lives beyond societal expectations.",
+                works: ["The Second Sex", "The Ethics of Ambiguity", "She Came to Stay"],
+                quotes: [
+                    "One is not born, but rather becomes, a woman.",
+                    "I am too intelligent, too demanding, and too resourceful for anyone to be able to take charge of me entirely.",
+                    "Change your life today. Don't gamble on the future, act now, without delay.",
+                    "Man is defined as a human being and woman as a female."
+                ],
+                ideas: ["Feminist Existentialism", "Social Construction", "Freedom"]
+            },
+            {
+                id: "marcus",
+                name: "Marcus Aurelius",
+                era: "Ancient Rome",
+                school: "Stoicism",
+                tagline: "You have power over your mind - not outside events.",
+                bio: "Marcus Aurelius (121–180 AD) was Roman emperor from 161 to 180 and a Stoic philosopher. During his reign, he wrote the 'Meditations' for his own guidance and self-improvement.\n\nHe believed that finding peace comes from within and that we should accept the things we cannot control while mastering our own reactions to them.",
+                works: ["Meditations"],
+                quotes: [
+                    "You have power over your mind - not outside events. Realize this, and you will find strength.",
+                    "The happiness of your life depends upon the quality of your thoughts.",
+                    "Waste no more time arguing about what a good man should be. Be one.",
+                    "Death smiles at us all, but all a man can do is smile back."
+                ],
+                ideas: ["Stoicism", "Self-Discipline", "Cosmopolitanism"]
+            },
+            {
+                id: "kant",
+                name: "Immanuel Kant",
+                era: "Enlightenment",
+                school: "Idealism",
+                tagline: "Two things fill the mind with ever new and increasing admiration and awe...",
+                bio: "Immanuel Kant (1724–1804) was a German philosopher who argued that the human mind creates the structure of human experience. He is a central figure in modern philosophy.\n\nHe is famous for the 'Categorical Imperative', which asserts that moral obligations are derived from pure reason, independent of observation.",
+                works: ["Critique of Pure Reason", "Critique of Practical Reason", "Groundwork of Metaphysics"],
+                quotes: [
+                    "Two things fill the mind with ever new and increasing admiration and awe... the starry heavens above me and the moral law within me.",
+                    "Science is organized knowledge. Wisdom is organized life.",
+                    "Act only according to that maxim whereby you can, at the same time, will that it should become a universal law.",
+                    "Immaturity is the incapacity to use one's intelligence without the guidance of another."
+                ],
+                ideas: ["Categorical Imperative", "Transcendental Idealism", "A Priori"]
+            },
+            {
+                id: "descartes",
+                name: "René Descartes",
+                era: "Modern Era",
+                school: "Rationalism",
+                tagline: "I think, therefore I am.",
+                bio: "René Descartes (1596–1650) was a French philosopher, mathematician, and scientist. Often called the 'Father of Modern Philosophy', his method of doubt laid the foundation for modern rationalism.\n\nHe famously concluded 'Cogito, ergo sum' ('I think, therefore I am'), establishing the existence of the self as the first certainty.",
+                works: ["Meditations on First Philosophy", "Discourse on the Method", "Principles of Philosophy"],
+                quotes: [
+                    "I think, therefore I am.",
+                    "It is not enough to have a good mind; the main thing is to use it well.",
+                    "The reading of all good books is like a conversation with the finest minds of past centuries.",
+                    "Divide each difficulty into as many parts as is feasible and necessary to resolve it."
+                ],
+                ideas: ["Dualism", "Methodological Skepticism", "Rationalism"]
+            },
+            {
+                id: "laozi",
+                name: "Laozi",
+                era: "Ancient China",
+                school: "Taoism",
+                tagline: "The journey of a thousand miles begins with a single step.",
+                bio: "Laozi was an ancient Chinese philosopher and writer, the reputed author of the Tao Te Ching and the founder of philosophical Taoism. He is a semi-legendary figure usually dated to the 6th century BC.\n\nLaozi's philosophy advocates for naturalness, simplicity, and 'Wu Wei' (non-action or effortless action), suggesting that one should live in harmony with the 'Tao' (The Way).",
+                works: ["Tao Te Ching"],
+                quotes: [
+                    "The journey of a thousand miles begins with a single step.",
+                    "Nature does not hurry, yet everything is accomplished.",
+                    "Knowing others is intelligence; knowing yourself is true wisdom.",
+                    "When I let go of what I am, I become what I might be."
+                ],
+                ideas: ["Tao (The Way)", "Wu Wei", "Simplicity"]
+            }
+        ];
 
-      // --- ICONS ---
-      const Icons = {
-        book: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>`,
-        feather: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" /><line x1="16" y1="8" x2="2" y2="22" /><line x1="17.5" y1="15" x2="9" y2="15" /></svg>`,
-        quote: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" /><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" /></svg>`,
-        arrowLeft: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>`,
-        arrowRight: `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>`
-      };
+        // --- ICONS ---
+        const Icons = {
+            arrowRight: `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>`,
+            arrowLeft: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>`,
+            quote: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" /><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" /></svg>`,
+            book: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>`,
+            feather: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" /><line x1="16" y1="8" x2="2" y2="22" /><line x1="17.5" y1="15" x2="9" y2="15" /></svg>`
+        };
 
-      // --- DOM ELEMENTS ---
-      const container = document.getElementById('app-container');
-      const yearSpan = document.getElementById('year');
-      if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+        // --- CORE LOGIC ---
+        const appRoot = document.getElementById('app-root');
+        
+        // Setup Date
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-      // --- RENDER FUNCTIONS ---
-      
-      // 1. Render List View
-      function renderList() {
-        let html = `
-          <div class="max-w-7xl mx-auto px-6 py-12 animate-fade-in">
-            <div class="mb-12 text-center max-w-2xl mx-auto">
-              <h2 class="text-4xl md:text-5xl font-serif font-bold text-stone-900 mb-6">
-                Meet the Thinkers
-              </h2>
-              <p class="text-lg text-stone-600 leading-relaxed">
-                Explore the lives and ideas of history's most influential philosophers. 
-                Click on a card to delve deeper into their biographies, famous works, and timeless quotes.
-              </p>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        `;
+        const app = {
+            // Render the Grid List
+            renderList: () => {
+                let cardsHtml = PHILOSOPHERS.map(p => {
+                    // Generate seeded image URL based on name
+                    const imgUrl = `https://picsum.photos/seed/${p.id}v1/400/500`;
+                    
+                    return `
+                    <div onclick="app.renderDetail('${p.id}')" 
+                         class="group relative cursor-pointer overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-stone-400/50 border border-stone-100">
+                        <div class="relative aspect-[4/5] overflow-hidden bg-stone-200">
+                            <img src="${imgUrl}" alt="${p.name}" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 filter sepia-[0.1] group-hover:sepia-0" loading="lazy">
+                            <div class="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/40 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-90"></div>
+                            
+                            <div class="absolute bottom-0 left-0 right-0 p-6 text-stone-100">
+                                <p class="mb-1 text-xs font-bold uppercase tracking-widest text-amber-400 opacity-90">${p.era}</p>
+                                <h3 class="mb-1 font-serif text-2xl font-bold leading-tight">${p.name}</h3>
+                                <p class="line-clamp-2 text-sm text-stone-300 font-light opacity-90">${p.tagline}</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-4 right-4 translate-x-10 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
+                             <span class="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 text-stone-900 shadow-lg">
+                               ${Icons.arrowRight}
+                             </span>
+                        </div>
+                    </div>
+                    `;
+                }).join('');
 
-        PHILOSOPHERS_DATA.forEach(p => {
-          const seed = encodeURIComponent(p.name);
-          const imageUrl = `https://picsum.photos/seed/${seed}/400/500`;
-          
-          html += `
-            <div 
-              onclick="app.goToDetail('${p.id}')"
-              class="group relative cursor-pointer overflow-hidden rounded-xl bg-stone-100 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-stone-400/50"
-            >
-              <div class="relative aspect-[4/5] overflow-hidden">
-                <img 
-                  src="${imageUrl}" 
-                  alt="${p.name}"
-                  loading="lazy"
-                  class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 filter sepia-[0.2] group-hover:sepia-0"
-                />
-                <div class="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/40 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-90"></div>
+                const pageHtml = `
+                    <div class="max-w-7xl mx-auto px-6 py-12 animate-fade-in">
+                        <div class="mb-12 text-center max-w-2xl mx-auto">
+                            <h2 class="text-4xl md:text-5xl font-serif font-bold text-stone-900 mb-6 tracking-tight">Meet the Thinkers</h2>
+                            <p class="text-lg text-stone-600 leading-relaxed">
+                                Explore the lives and ideas of history's most influential philosophers. 
+                                Click on a card to delve deeper into their biographies, famous works, and timeless quotes.
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                            ${cardsHtml}
+                        </div>
+                    </div>
+                `;
                 
-                <div class="absolute bottom-0 left-0 right-0 p-6 text-stone-100">
-                  <p class="mb-1 text-xs font-bold uppercase tracking-widest text-amber-400 opacity-90">${p.era}</p>
-                  <h3 class="mb-1 font-serif text-2xl font-bold leading-tight">${p.name}</h3>
-                  <p class="line-clamp-2 text-sm text-stone-300 font-light">${p.tagline}</p>
-                </div>
-              </div>
-              
-              <div class="absolute top-4 right-4 translate-x-10 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
-                 <span class="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 text-stone-900">
-                   ${Icons.arrowRight}
-                 </span>
-              </div>
-            </div>
-          `;
-        });
+                appRoot.innerHTML = pageHtml;
+                window.scrollTo(0, 0);
+            },
 
-        html += `</div></div>`;
-        container.innerHTML = html;
-        window.scrollTo(0,0);
-      }
+            // Render the Detail View
+            renderDetail: (id) => {
+                const p = PHILOSOPHERS.find(x => x.id === id);
+                if (!p) return app.renderList();
 
-      // 2. Render Detail View
-      function renderDetail(id) {
-        const detail = PHILOSOPHERS_DATA.find(p => p.id === id);
-        if (!detail) return renderList();
+                const imgUrl = `https://picsum.photos/seed/${p.id}v1/800/600`;
+                
+                const worksList = p.works.map(w => 
+                    `<li class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 hover:border-amber-300 transition-colors flex items-center gap-3">
+                        <span class="text-amber-600">${Icons.book}</span>
+                        <span class="font-serif text-lg font-medium text-stone-800 italic">${w}</span>
+                     </li>`
+                ).join('');
 
-        const seed = encodeURIComponent(detail.name);
-        const imageUrl = `https://picsum.photos/seed/${seed}/800/600`;
-        
-        // Helper for splitting paragraphs
-        const bioHtml = detail.bio.split('\n').map(p => `<p class="mb-4">${p}</p>`).join('');
-        
-        // Helper for works
-        const worksHtml = detail.famousWorks.map(w => `
-          <li class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 hover:border-amber-300 transition-colors">
-            <span class="font-serif text-lg font-medium text-stone-800 italic">${w}</span>
-          </li>
-        `).join('');
+                const quotesList = p.quotes.map(q => 
+                    `<figure class="block group hover:bg-stone-800/50 p-2 rounded transition-colors">
+                        <blockquote class="font-serif text-lg leading-relaxed italic text-stone-300 border-l-2 border-amber-600 pl-4 group-hover:border-amber-400">
+                            "${q}"
+                        </blockquote>
+                     </figure>`
+                ).join('');
 
-        // Helper for ideas
-        const ideasHtml = detail.coreIdeas.map(i => `
-          <span class="px-4 py-2 bg-stone-200 text-stone-700 rounded-lg text-sm font-medium">
-             ${i}
-           </span>
-        `).join('');
+                const ideasTags = p.ideas.map(i => 
+                    `<span class="px-4 py-2 bg-stone-200 text-stone-700 rounded-full text-sm font-medium border border-stone-300">${i}</span>`
+                ).join('');
 
-        // Helper for quotes
-        const quotesHtml = detail.quotes.map(q => `
-           <figure class="block">
-             <blockquote class="font-serif text-lg leading-relaxed italic text-stone-300 border-l-2 border-amber-700 pl-4">
-               "${q}"
-             </blockquote>
-           </figure>
-        `).join('');
+                const detailHtml = `
+                    <div class="bg-stone-50 animate-fade-in pb-12 min-h-screen">
+                        <!-- Hero Section -->
+                        <div class="relative h-[40vh] md:h-[50vh] w-full overflow-hidden bg-stone-900">
+                            <img src="${imgUrl}" alt="${p.name}" class="h-full w-full object-cover opacity-60 filter sepia-[0.2]">
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-stone-900/30 to-stone-50"></div>
+                            
+                            <!-- Nav Back -->
+                            <div class="absolute top-6 left-6 z-20">
+                                <button onclick="app.goHome()" class="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-white backdrop-blur-md transition-all hover:bg-white/20 hover:pr-6 border border-white/10">
+                                    <div class="w-5 h-5">${Icons.arrowLeft}</div>
+                                    <span class="font-medium shadow-sm">Back to List</span>
+                                </button>
+                            </div>
 
-        const html = `
-          <div class="bg-stone-50 animate-fade-in pb-12">
-            <!-- Hero -->
-            <div class="relative h-[40vh] md:h-[50vh] w-full overflow-hidden">
-              <img 
-                src="${imageUrl}" 
-                alt="${detail.name}" 
-                class="h-full w-full object-cover filter brightness-75 sepia-[0.3]"
-              />
-              <div class="absolute inset-0 bg-gradient-to-b from-transparent via-stone-900/20 to-stone-50"></div>
-              
-              <!-- Back Button -->
-              <div class="absolute top-6 left-6 z-10">
-                <button 
-                  onclick="app.goHome()"
-                  class="flex items-center gap-2 rounded-full bg-stone-900/20 px-4 py-2 text-stone-100 backdrop-blur-md transition-all hover:bg-stone-900/40 hover:pr-6"
-                >
-                  <div class="w-5 h-5">${Icons.arrowLeft}</div>
-                  <span class="font-medium">All Philosophers</span>
-                </button>
-              </div>
+                            <!-- Title -->
+                            <div class="absolute bottom-0 left-0 right-0 p-8 md:p-12 max-w-5xl mx-auto z-10">
+                                <div class="inline-block px-3 py-1 mb-4 rounded-full bg-amber-500 text-stone-900 text-xs font-bold tracking-widest uppercase shadow-lg">
+                                    ${p.school}
+                                </div>
+                                <h1 class="text-5xl md:text-7xl font-serif font-bold text-stone-900 mb-2 drop-shadow-sm leading-none">${p.name}</h1>
+                                <p class="text-xl md:text-2xl text-stone-800 font-light italic max-w-2xl opacity-90">${p.tagline}</p>
+                            </div>
+                        </div>
 
-              <!-- Title Block -->
-              <div class="absolute bottom-0 left-0 right-0 p-8 md:p-12 max-w-5xl mx-auto">
-                 <div class="inline-block px-3 py-1 mb-4 rounded-full bg-amber-500/90 text-stone-900 text-xs font-bold tracking-widest uppercase backdrop-blur-sm">
-                  ${detail.school}
-                </div>
-                <h1 class="text-5xl md:text-7xl font-serif font-bold text-stone-900 mb-2 drop-shadow-sm">
-                  ${detail.name}
-                </h1>
-                <p class="text-xl md:text-2xl text-stone-700 font-light italic max-w-2xl">
-                  ${detail.tagline}
-                </p>
-              </div>
-            </div>
+                        <!-- Content Grid -->
+                        <div class="max-w-5xl mx-auto px-6 py-12 md:py-16 grid grid-cols-1 md:grid-cols-12 gap-12">
+                            
+                            <!-- Left: Bio & Facts -->
+                            <div class="md:col-span-7 space-y-12">
+                                <section>
+                                    <div class="flex items-center gap-3 mb-6 border-b border-stone-200 pb-2">
+                                        <div class="text-amber-600 h-6 w-6">${Icons.feather}</div>
+                                        <h2 class="text-2xl font-serif font-bold text-stone-800">Biography</h2>
+                                    </div>
+                                    <div class="prose prose-stone prose-lg text-stone-600 leading-relaxed font-light whitespace-pre-line">
+                                        ${p.bio}
+                                    </div>
+                                </section>
 
-            <!-- Content Grid -->
-            <div class="max-w-5xl mx-auto px-6 py-12 md:py-16 grid grid-cols-1 md:grid-cols-12 gap-12">
-              
-              <!-- Left Column -->
-              <div class="md:col-span-7 space-y-12">
-                <section>
-                  <div class="flex items-center gap-3 mb-6">
-                    <div class="text-amber-600 h-6 w-6">${Icons.feather}</div>
-                    <h2 class="text-2xl font-serif font-bold text-stone-800">Biography</h2>
-                  </div>
-                  <div class="prose prose-stone prose-lg text-stone-600 leading-relaxed font-light">
-                    ${bioHtml}
-                  </div>
-                </section>
+                                <section>
+                                    <div class="flex items-center gap-3 mb-6 border-b border-stone-200 pb-2">
+                                        <div class="text-amber-600 h-6 w-6">${Icons.book}</div>
+                                        <h2 class="text-2xl font-serif font-bold text-stone-800">Famous Works</h2>
+                                    </div>
+                                    <ul class="flex flex-col gap-3">
+                                        ${worksList}
+                                    </ul>
+                                </section>
 
-                <section>
-                  <div class="flex items-center gap-3 mb-6">
-                    <div class="text-amber-600 h-6 w-6">${Icons.book}</div>
-                    <h2 class="text-2xl font-serif font-bold text-stone-800">Famous Works</h2>
-                  </div>
-                  <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    ${worksHtml}
-                  </ul>
-                </section>
+                                <section>
+                                    <h3 class="text-lg font-serif font-bold text-stone-800 mb-4">Key Concepts</h3>
+                                    <div class="flex flex-wrap gap-2">
+                                        ${ideasTags}
+                                    </div>
+                                </section>
+                            </div>
 
-                <section>
-                   <h3 class="text-lg font-serif font-bold text-stone-800 mb-4">Core Ideas</h3>
-                   <div class="flex flex-wrap gap-2">
-                     ${ideasHtml}
-                   </div>
-                </section>
-              </div>
+                            <!-- Right: Quotes (Sticky) -->
+                            <div class="md:col-span-5 relative">
+                                <div class="sticky top-24">
+                                    <div class="bg-stone-900 text-stone-200 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+                                        <div class="absolute top-[-10px] right-[-10px] text-stone-800 h-40 w-40 opacity-20 transform rotate-12">${Icons.quote}</div>
+                                        
+                                        <h2 class="text-2xl font-serif font-bold text-amber-500 mb-8 relative z-10 flex items-center gap-2">
+                                            <div class="h-6 w-6">${Icons.quote}</div> Wisdom
+                                        </h2>
 
-              <!-- Right Column (Sticky Quotes) -->
-              <div class="md:col-span-5 relative">
-                <div class="sticky top-24">
-                  <div class="bg-stone-900 text-stone-200 rounded-2xl p-8 shadow-xl relative overflow-hidden">
-                     <div class="absolute top-4 right-4 text-stone-800 h-32 w-32 opacity-20 transform rotate-12">${Icons.quote}</div>
-                     
-                     <h2 class="text-2xl font-serif font-bold text-amber-500 mb-8 relative z-10 flex items-center gap-2">
-                       <div class="h-6 w-6">${Icons.quote}</div> Wisdom
-                     </h2>
+                                        <div class="space-y-6 relative z-10">
+                                            ${quotesList}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                     <div class="space-y-8 relative z-10">
-                       ${quotesHtml}
-                     </div>
-                  </div>
-                </div>
-              </div>
+                        </div>
+                    </div>
+                `;
+                
+                appRoot.innerHTML = detailHtml;
+                window.scrollTo(0, 0);
+            },
+            
+            goHome: () => app.renderList()
+        };
 
-            </div>
-          </div>
-        `;
-        container.innerHTML = html;
-        window.scrollTo(0,0);
-      }
-
-      // --- CONTROLLER ---
-      const app = {
-        init: () => {
-          renderList();
-        },
-        goHome: () => {
-          renderList();
-        },
-        goToDetail: (id) => {
-          renderDetail(id);
-        }
-      };
-
-      // Expose to window
-      window.app = app;
-
-      // Start App
-      app.init();
-
+        // Initialize
+        window.app = app;
+        app.renderList();
     </script>
-  </body>
+</body>
 </html>
