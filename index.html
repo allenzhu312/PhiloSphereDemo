@@ -76,6 +76,18 @@
         overflow: hidden;
       }
     </style>
+    <!-- 
+      POLYFILL FOR STATIC ENVIRONMENT
+      This script mimics the Node.js process environment so the app can run without a build step.
+      PLEASE PASTE YOUR GEMINI API KEY BELOW inside the quotes.
+    -->
+    <script>
+      window.process = {
+        env: {
+          API_KEY: '' // <--- PASTE YOUR API KEY HERE
+        }
+      };
+    </script>
     <script type="importmap">
 {
   "imports": {
@@ -129,8 +141,15 @@
       import { GoogleGenAI, Type } from "@google/genai";
 
       // --- Configuration ---
+      // This will now work because of the polyfill script in the head
       const API_KEY = process.env.API_KEY; 
-      const ai = new GoogleGenAI({ apiKey: API_KEY });
+      
+      let ai;
+      try {
+        ai = new GoogleGenAI({ apiKey: API_KEY });
+      } catch (e) {
+        console.error("Failed to initialize Gemini AI. Check API Key.", e);
+      }
 
       // --- State ---
       const state = {
@@ -210,11 +229,12 @@
       // --- DOM Elements ---
       const container = document.getElementById('app-container');
       const yearSpan = document.getElementById('year');
-      yearSpan.textContent = new Date().getFullYear();
+      if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
       // --- API Service ---
       const API = {
         fetchList: async () => {
+          if (!ai) throw new Error("Gemini AI not initialized");
           try {
             const response = await ai.models.generateContent({
               model: "gemini-2.5-flash",
@@ -234,6 +254,7 @@
           }
         },
         fetchDetail: async (summary) => {
+          if (!ai) throw new Error("Gemini AI not initialized");
           try {
             const response = await ai.models.generateContent({
               model: "gemini-2.5-flash",
@@ -278,6 +299,7 @@
                >
                  Reload Application
                </button>
+               <p class="text-xs text-stone-400 mt-4">Note: Ensure API_KEY is set in the index.html source code.</p>
             </div>
           </div>
         `;
