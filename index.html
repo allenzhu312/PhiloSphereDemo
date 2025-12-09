@@ -42,7 +42,6 @@
             },
             animation: {
               'fade-in': 'fadeIn 0.5s ease-out',
-              'bounce-slow': 'bounce 2s infinite',
             },
             keyframes: {
               fadeIn: {
@@ -76,29 +75,17 @@
         overflow: hidden;
       }
     </style>
-    <!-- 
-      POLYFILL FOR STATIC ENVIRONMENT
-      This script mimics the Node.js process environment so the app can run without a build step.
-      PLEASE PASTE YOUR GEMINI API KEY BELOW inside the quotes.
-    -->
-    <script>
-      window.process = {
-        env: {
-          API_KEY: '' // <--- PASTE YOUR API KEY HERE
-        }
-      };
-    </script>
-    <script type="importmap">
+  <script type="importmap">
 {
   "imports": {
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.32.0",
     "react": "https://aistudiocdn.com/react@^19.2.1",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
-    "react/": "https://aistudiocdn.com/react@^19.2.1/"
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.32.0"
   }
 }
 </script>
-  </head>
+</head>
   <body class="bg-[#FDFCF8] text-stone-800 font-sans selection:bg-amber-200 selection:text-amber-900 min-h-screen flex flex-col">
     
     <!-- Header -->
@@ -117,9 +104,6 @@
              <p class="text-xs text-stone-500 font-medium tracking-wide uppercase">Wisdom of the Ages</p>
            </div>
         </div>
-        <button onclick="window.location.reload()" class="text-sm font-semibold text-stone-500 hover:text-stone-900 transition-colors" title="Reset App">
-          Reset
-        </button>
       </div>
     </header>
 
@@ -132,93 +116,210 @@
     <footer class="bg-stone-900 text-stone-400 py-12 mt-auto">
       <div class="max-w-7xl mx-auto px-6 text-center">
         <p class="font-serif italic mb-4">"The only true wisdom is in knowing you know nothing."</p>
-        <p class="text-sm opacity-60">&copy; <span id="year"></span> PhiloSphere. Powered by Gemini.</p>
+        <p class="text-sm opacity-60">&copy; <span id="year"></span> PhiloSphere. Static Edition.</p>
       </div>
     </footer>
 
-    <!-- Application Logic -->
-    <script type="module">
-      import { GoogleGenAI, Type } from "@google/genai";
-
-      // --- Configuration ---
-      // This will now work because of the polyfill script in the head
-      const API_KEY = process.env.API_KEY; 
-      
-      let ai;
-      try {
-        ai = new GoogleGenAI({ apiKey: API_KEY });
-      } catch (e) {
-        console.error("Failed to initialize Gemini AI. Check API Key.", e);
-      }
-
-      // --- State ---
-      const state = {
-        view: 'loading', // 'loading', 'list', 'detail', 'error'
-        philosophers: [],
-        selectedId: null,
-        detailsCache: {}, // Cache details to avoid re-fetching
-        error: null
-      };
-
-      // --- Schemas ---
-      const summarySchema = {
-        type: Type.OBJECT,
-        properties: {
-          philosophers: {
-            type: Type.ARRAY,
-            items: {
-              type: Type.OBJECT,
-              properties: {
-                id: { type: Type.STRING },
-                name: { type: Type.STRING },
-                tagline: { type: Type.STRING },
-                era: { type: Type.STRING },
-                school: { type: Type.STRING },
-              },
-              required: ["id", "name", "tagline", "era", "school"],
-            },
-          },
+    <!-- Application Logic & Data -->
+    <script>
+      // --- HARDCODED DATASET ---
+      const PHILOSOPHERS_DATA = [
+        {
+          id: "socrates",
+          name: "Socrates",
+          tagline: "The unexamined life is not worth living.",
+          era: "Ancient Greece",
+          school: "Classical Greek",
+          bio: "Socrates (470–399 BC) was a Greek philosopher from Athens who is credited as one of the founders of Western philosophy, and as being the first moral philosopher of the Western ethical tradition of thought. Unlike other philosophers of his time, Socrates wrote nothing down. His life and ideas are known to us through the writings of his students, most notably Plato and Xenophon.\n\nHe is best known for the Socratic method, a form of cooperative argumentative dialogue between individuals, based on asking and answering questions to stimulate critical thinking and to draw out ideas and underlying presumptions. He was sentenced to death by drinking hemlock for corrupting the youth of Athens and impiety.",
+          famousWorks: ["Apology (by Plato)", "Crito (by Plato)", "Phaedo (by Plato)"],
+          quotes: [
+            "The unexamined life is not worth living.",
+            "I know that I know nothing.",
+            "Wonder is the beginning of wisdom.",
+            "To find yourself, think for yourself."
+          ],
+          coreIdeas: ["Socratic Method", "Socratic Irony", "Virtue is Knowledge"]
         },
-        required: ["philosophers"],
-      };
-
-      const detailSchema = {
-        type: Type.OBJECT,
-        properties: {
-          bio: { type: Type.STRING, description: "A comprehensive 2-paragraph biography." },
-          famousWorks: { 
-            type: Type.ARRAY, 
-            items: { type: Type.STRING },
-            description: "List of 3-5 most important books or essays."
-          },
-          quotes: { 
-            type: Type.ARRAY, 
-            items: { type: Type.STRING },
-            description: "List of 4-6 most famous quotes."
-          },
-          coreIdeas: {
-            type: Type.ARRAY,
-            items: { type: Type.STRING },
-            description: "3 key philosophical concepts they are known for."
-          }
+        {
+          id: "plato",
+          name: "Plato",
+          tagline: "Philosophy begins in wonder.",
+          era: "Ancient Greece",
+          school: "Platonism",
+          bio: "Plato (428/427 or 424/423 – 348/347 BC) was a philosopher in Classical Greece and the founder of the Academy in Athens, the first institution of higher learning in the Western world. He is widely considered the pivotal figure in the development of Western philosophy. He was a student of Socrates and the teacher of Aristotle.\n\nPlato's philosophy is best known for his 'Theory of Forms', which proposes that the physical world is not as real or true as timeless, absolute, unchangeable ideas. In his most famous work, 'The Republic', he envisions a society governed by philosopher-kings, arguing that those with the greatest wisdom should rule.",
+          famousWorks: ["The Republic", "Symposium", "Phaedrus", "Timaeus"],
+          quotes: [
+            "We can easily forgive a child who is afraid of the dark; the real tragedy of life is when men are afraid of the light.",
+            "Wise men speak because they have something to say; fools because they have to say something.",
+            "Ignorance, the root and stem of all evil.",
+            "Opinion is the medium between knowledge and ignorance."
+          ],
+          coreIdeas: ["Theory of Forms", "Platonic Idealism", "Philosopher King"]
         },
-        required: ["bio", "famousWorks", "quotes", "coreIdeas"],
-      };
+        {
+          id: "aristotle",
+          name: "Aristotle",
+          tagline: "We are what we repeatedly do.",
+          era: "Ancient Greece",
+          school: "Peripatetic",
+          bio: "Aristotle (384–322 BC) was a Greek philosopher and polymath during the Classical period in Ancient Greece. Taught by Plato, he was the founder of the Lyceum, the Peripatetic school of philosophy, and the Aristotelian tradition. His writings cover many subjects including physics, biology, zoology, metaphysics, logic, ethics, aesthetics, poetry, theater, music, rhetoric, psychology, linguistics, economics, politics, and government.\n\nAristotle provided a complex synthesis of the various philosophies existing prior to him. It was above all from his teachings that the West inherited its intellectual lexicon, as well as problems and methods of inquiry. Unlike Plato, he emphasized empirical observation and logic, laying the groundwork for the scientific method.",
+          famousWorks: ["Nicomachean Ethics", "Politics", "Metaphysics", "Poetics"],
+          quotes: [
+            "We are what we repeatedly do. Excellence, then, is not an act, but a habit.",
+            "It is the mark of an educated mind to be able to entertain a thought without accepting it.",
+            "Happiness depends upon ourselves.",
+            "Man is by nature a political animal."
+          ],
+          coreIdeas: ["Virtue Ethics", "The Golden Mean", "Empiricism"]
+        },
+        {
+          id: "confucius",
+          name: "Confucius",
+          tagline: "It does not matter how slowly you go as long as you do not stop.",
+          era: "Ancient China",
+          school: "Confucianism",
+          bio: "Confucius (551–479 BC) was a Chinese philosopher and politician of the Spring and Autumn period. The philosophy of Confucius, also known as Confucianism, emphasized personal and governmental morality, correctness of social relationships, justice, kindness, and sincerity. His followers competed successfully with many other schools during the Hundred Schools of Thought era.\n\nConfucius's principles have an establishment in common Chinese tradition and belief. He championed strong family loyalty, ancestor veneration, and respect of elders by their children and of husbands by their wives, recommending family as a basis for ideal government. He espoused the well-known principle 'Do not do unto others what you do not want done to yourself'.",
+          famousWorks: ["The Analects", "The Doctrine of the Mean", "The Great Learning"],
+          quotes: [
+            "It does not matter how slowly you go as long as you do not stop.",
+            "Real knowledge is to know the extent of one's ignorance.",
+            "Our greatest glory is not in never falling, but in rising every time we fall.",
+            "Wheresoever you go, go with all your heart."
+          ],
+          coreIdeas: ["Ren (Benevolence)", "Li (Ritual)", "Filial Piety"]
+        },
+        {
+          id: "laozi",
+          name: "Laozi",
+          tagline: "The journey of a thousand miles begins with a single step.",
+          era: "Ancient China",
+          school: "Taoism",
+          bio: "Laozi (also known as Lao Tzu) was an ancient Chinese philosopher and writer. He is the reputed author of the Tao Te Ching, the founder of philosophical Taoism, and a deity in religious Taoism and traditional Chinese religions. A semi-legendary figure, he is usually dated to around the 6th century BC and reckoned a contemporary of Confucius.\n\nLaozi's philosophy advocates for naturalness, simplicity, and spontaneity. The central concept is the 'Tao' (The Way), an ineffable natural force that guides all things. He taught that one should live in harmony with the Tao by practicing 'Wu Wei' (non-action or effortless action), suggesting that the best way to manage affairs is to let them take their natural course.",
+          famousWorks: ["Tao Te Ching"],
+          quotes: [
+            "The journey of a thousand miles begins with a single step.",
+            "Nature does not hurry, yet everything is accomplished.",
+            "Knowing others is intelligence; knowing yourself is true wisdom.",
+            "When I let go of what I am, I become what I might be."
+          ],
+          coreIdeas: ["Tao (The Way)", "Wu Wei (Non-action)", "Simplicity"]
+        },
+        {
+          id: "kant",
+          name: "Immanuel Kant",
+          tagline: "Act only according to that maxim whereby you can, at the same time, will that it should become a universal law.",
+          era: "Enlightenment",
+          school: "German Idealism",
+          bio: "Immanuel Kant (1724–1804) was a German philosopher and one of the central Enlightenment thinkers. Kant's comprehensive and systematic works in epistemology, metaphysics, ethics, and aesthetics have made him one of the most influential figures in modern Western philosophy. He argued that the human mind creates the structure of human experience.\n\nIn his major work, 'Critique of Pure Reason', Kant attempted to unite reason with experience to move beyond what he took to be failures of traditional philosophy and metaphysics. He is also famous for his moral philosophy based on the 'Categorical Imperative', which asserts that moral obligations are derived from pure reason, independent of observation.",
+          famousWorks: ["Critique of Pure Reason", "Critique of Practical Reason", "Groundwork of the Metaphysics of Morals"],
+          quotes: [
+            "Two things fill the mind with ever new and increasing admiration and awe... the starry heavens above me and the moral law within me.",
+            "Science is organized knowledge. Wisdom is organized life.",
+            "Act only according to that maxim whereby you can, at the same time, will that it should become a universal law.",
+            "Immaturity is the incapacity to use one's intelligence without the guidance of another."
+          ],
+          coreIdeas: ["Categorical Imperative", "Transcendental Idealism", "Synthetic A Priori"]
+        },
+        {
+          id: "nietzsche",
+          name: "Friedrich Nietzsche",
+          tagline: "That which does not kill us makes us stronger.",
+          era: "19th Century",
+          school: "Existentialism",
+          bio: "Friedrich Nietzsche (1844–1900) was a German philosopher, cultural critic, composer, poet, and philologist whose work has exerted a profound influence on modern intellectual history. He began his career as a classical philologist before turning to philosophy. His writing spans philosophical polemics, poetry, cultural criticism, and fiction while displaying a fondness for aphorism and irony.\n\nNietzsche challenged the foundations of Christianity and traditional morality. He introduced concepts such as the 'Übermensch' (Overman), the 'Will to Power', and 'Eternal Recurrence'. His famous proclamation 'God is dead' was a critique of the erosion of traditional moral values in the face of scientific progress.",
+          famousWorks: ["Thus Spoke Zarathustra", "Beyond Good and Evil", "The Genealogy of Morals"],
+          quotes: [
+            "He who has a why to live can bear almost any how.",
+            "That which does not kill us makes us stronger.",
+            "And those who were seen dancing were thought to be insane by those who could not hear the music.",
+            "God is dead. God remains dead. And we have killed him."
+          ],
+          coreIdeas: ["Will to Power", "Übermensch", "Perspectivism"]
+        },
+        {
+          id: "descartes",
+          name: "René Descartes",
+          tagline: "I think, therefore I am.",
+          era: "Modern Philosophy",
+          school: "Rationalism",
+          bio: "René Descartes (1596–1650) was a French philosopher, mathematician, and scientist. He is often called the 'Father of Modern Philosophy'. His refusal to accept previous philosophical authority and his method of doubt laid the foundation for modern rationalism. He was also a key figure in the Scientific Revolution.\n\nDescartes famously employed 'methodological skepticism', doubting everything that could possibly be doubted until he reached a certainty that could not be denied. This led to his famous conclusion 'Cogito, ergo sum' ('I think, therefore I am'). He viewed the mind and body as distinct substances, a view known as Cartesian Dualism.",
+          famousWorks: ["Meditations on First Philosophy", "Discourse on the Method", "Principles of Philosophy"],
+          quotes: [
+            "I think, therefore I am.",
+            "It is not enough to have a good mind; the main thing is to use it well.",
+            "The reading of all good books is like a conversation with the finest minds of past centuries.",
+            "Divide each difficulty into as many parts as is feasible and necessary to resolve it."
+          ],
+          coreIdeas: ["Cartesian Dualism", "Methodological Skepticism", "Rationalism"]
+        },
+        {
+          id: "beauvoir",
+          name: "Simone de Beauvoir",
+          tagline: "One is not born, but rather becomes, a woman.",
+          era: "20th Century",
+          school: "Existentialism / Feminism",
+          bio: "Simone de Beauvoir (1908–1986) was a French existentialist philosopher, writer, social theorist, and feminist activist. Though she did not consider herself a philosopher, she had a significant influence on both feminist existentialism and feminist theory. She was a lifelong partner of Jean-Paul Sartre.\n\nHer most famous work, 'The Second Sex', is a foundational text of modern feminism. In it, she details the oppression of women throughout history and argues that gender is a social construct ('One is not born, but rather becomes, a woman'). She argued for women's liberation and the freedom to define their own lives beyond societal expectations.",
+          famousWorks: ["The Second Sex", "The Ethics of Ambiguity", "She Came to Stay"],
+          quotes: [
+            "One is not born, but rather becomes, a woman.",
+            "I am too intelligent, too demanding, and too resourceful for anyone to be able to take charge of me entirely.",
+            "Change your life today. Don't gamble on the future, act now, without delay.",
+            "Man is defined as a human being and woman as a female - whenever she behaves as a human being she is said to imitate the male."
+          ],
+          coreIdeas: ["Feminist Existentialism", "Social Construction of Gender", "Freedom and Responsibility"]
+        },
+        {
+          id: "marcus",
+          name: "Marcus Aurelius",
+          tagline: "You have power over your mind - not outside events.",
+          era: "Ancient Rome",
+          school: "Stoicism",
+          bio: "Marcus Aurelius (121–180 AD) was Roman emperor from 161 to 180 and a Stoic philosopher. He is the last of the rulers known as the Five Good Emperors. During his reign, he wrote the 'Meditations' in Greek for his own guidance and self-improvement.\n\nHis writings are a major source of our modern understanding of ancient Stoic philosophy. Marcus Aurelius focuses on the denial of emotion, the importance of logic, and the understanding of the nature of the universe. He believed that finding peace comes from within and that we should accept the things we cannot control while mastering our own reactions to them.",
+          famousWorks: ["Meditations"],
+          quotes: [
+            "You have power over your mind - not outside events. Realize this, and you will find strength.",
+            "The happiness of your life depends upon the quality of your thoughts.",
+            "Waste no more time arguing about what a good man should be. Be one.",
+            "Death smiles at us all, but all a man can do is smile back."
+          ],
+          coreIdeas: ["Stoicism", "Self-Discipline", "Cosmopolitanism"]
+        },
+        {
+          id: "hypatia",
+          name: "Hypatia",
+          tagline: "Reserve your right to think, for even to think wrongly is better than not to think at all.",
+          era: "Late Antiquity",
+          school: "Neoplatonism",
+          bio: "Hypatia (c. 350–370 to 415 AD) was a Hellenistic Neoplatonist philosopher, astronomer, and mathematician, who lived in Alexandria, Egypt. She was a prominent thinker of the Neoplatonic school in Alexandria, where she taught philosophy and astronomy. She is the first female mathematician whose life is reasonably well recorded.\n\nShe was known for her great eloquence and learning. Although she was a pagan, she was respected by many Christians and taught students from diverse religious backgrounds. She was tragically murdered by a mob, an event that some historians mark as the end of the classical era of philosophy.",
+          famousWorks: ["Commentary on Arithmetica", "Commentary on Conics", "The Astronomical Canon (Lost)"],
+          quotes: [
+            "Reserve your right to think, for even to think wrongly is better than not to think at all.",
+            "To teach superstitions as truths is a most terrible thing.",
+            "Life is an unfoldment, and the further we travel the more truth we can comprehend.",
+            "Fables should be taught as fables, myths as myths, and miracles as poetic fantasies."
+          ],
+          coreIdeas: ["Neoplatonism", "Mathematics as Divine", "Intellectual Freedom"]
+        },
+        {
+          id: "hume",
+          name: "David Hume",
+          tagline: "Reason is, and ought only to be the slave of the passions.",
+          era: "Enlightenment",
+          school: "Empiricism",
+          bio: "David Hume (1711–1776) was a Scottish Enlightenment philosopher, historian, economist, librarian and essayist, who is best known today for his highly influential system of philosophical empiricism, skepticism, and naturalism. He argued that all human knowledge derives solely from experience.\n\nHume is famous for asserting that 'reason is, and ought only to be the slave of the passions', implying that logic alone cannot dictate action; desire must also be present. He also challenged the notion of cause and effect, suggesting it is merely a habit of association in the mind rather than a force of nature.",
+          famousWorks: ["A Treatise of Human Nature", "An Enquiry Concerning Human Understanding", "Dialogues Concerning Natural Religion"],
+          quotes: [
+            "Reason is, and ought only to be the slave of the passions.",
+            "Beauty in things exists in the mind which contemplates them.",
+            "A wise man proportions his belief to the evidence.",
+            "The life of man is of no greater importance to the universe than that of an oyster."
+          ],
+          coreIdeas: ["Empiricism", "Problem of Induction", "Bundle Theory of Self"]
+        }
+      ];
 
-      // --- Icons (SVG Strings) ---
+      // --- ICONS ---
       const Icons = {
-        loading: `
-          <div class="flex flex-col items-center justify-center p-8 text-stone-600 animate-pulse">
-            <div class="relative">
-              <div class="absolute inset-0 bg-amber-200 blur-xl opacity-20 rounded-full"></div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 text-amber-700 mb-4 relative z-10 animate-bounce-slow">
-                <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z" />
-                <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z" />
-              </svg>
-            </div>
-            <p class="text-xl font-serif italic text-stone-500" id="loading-text">Contemplating...</p>
-          </div>
-        `,
         book: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>`,
         feather: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" /><line x1="16" y1="8" x2="2" y2="22" /><line x1="17.5" y1="15" x2="9" y2="15" /></svg>`,
         quote: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" /><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" /></svg>`,
@@ -226,86 +327,15 @@
         arrowRight: `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>`
       };
 
-      // --- DOM Elements ---
+      // --- DOM ELEMENTS ---
       const container = document.getElementById('app-container');
       const yearSpan = document.getElementById('year');
       if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-      // --- API Service ---
-      const API = {
-        fetchList: async () => {
-          if (!ai) throw new Error("Gemini AI not initialized");
-          try {
-            const response = await ai.models.generateContent({
-              model: "gemini-2.5-flash",
-              contents: "Generate a list of 12 distinct, famous philosophers from diverse eras and cultures (e.g., Greek, Eastern, Modern, Existentialist).",
-              config: {
-                responseMimeType: "application/json",
-                responseSchema: summarySchema,
-                systemInstruction: "You are a helpful philosophy expert. Return clean JSON.",
-              },
-            });
-            const text = response.text;
-            if (!text) throw new Error("No response from AI");
-            return JSON.parse(text).philosophers;
-          } catch (e) {
-            console.error(e);
-            throw e;
-          }
-        },
-        fetchDetail: async (summary) => {
-          if (!ai) throw new Error("Gemini AI not initialized");
-          try {
-            const response = await ai.models.generateContent({
-              model: "gemini-2.5-flash",
-              contents: `Provide detailed information about the philosopher ${summary.name} (${summary.era}).`,
-              config: {
-                responseMimeType: "application/json",
-                responseSchema: detailSchema,
-                systemInstruction: "You are an expert biographer and philosopher. Provide accurate, insightful, and engaging content.",
-              },
-            });
-            const text = response.text;
-            if (!text) throw new Error("No response from AI");
-            return { ...summary, ...JSON.parse(text) };
-          } catch (e) {
-            console.error(e);
-            throw e;
-          }
-        }
-      };
-
-      // --- Render Functions ---
-
-      function renderLoading(message = "Contemplating...") {
-        container.innerHTML = `
-          <div class="min-h-[60vh] flex items-center justify-center">
-            ${Icons.loading}
-          </div>
-        `;
-        const textEl = document.getElementById('loading-text');
-        if(textEl) textEl.textContent = message;
-      }
-
-      function renderError(message) {
-        container.innerHTML = `
-          <div class="min-h-[60vh] bg-stone-100 flex flex-col items-center justify-center text-center p-4">
-            <div class="bg-white p-8 rounded-2xl shadow-xl max-w-md">
-               <h2 class="text-2xl font-bold text-red-800 mb-4 font-serif">A Philosophical Paradox</h2>
-               <p class="text-stone-600 mb-6">${message}</p>
-               <button 
-                onclick="window.location.reload()"
-                class="px-6 py-2 bg-stone-800 text-stone-100 rounded-lg hover:bg-stone-700 transition"
-               >
-                 Reload Application
-               </button>
-               <p class="text-xs text-stone-400 mt-4">Note: Ensure API_KEY is set in the index.html source code.</p>
-            </div>
-          </div>
-        `;
-      }
-
-      function renderList(philosophers) {
+      // --- RENDER FUNCTIONS ---
+      
+      // 1. Render List View
+      function renderList() {
         let html = `
           <div class="max-w-7xl mx-auto px-6 py-12 animate-fade-in">
             <div class="mb-12 text-center max-w-2xl mx-auto">
@@ -320,14 +350,14 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         `;
 
-        philosophers.forEach(p => {
+        PHILOSOPHERS_DATA.forEach(p => {
           const seed = encodeURIComponent(p.name);
           const imageUrl = `https://picsum.photos/seed/${seed}/400/500`;
           
           html += `
             <div 
-              data-id="${p.id}"
-              class="philosopher-card group relative cursor-pointer overflow-hidden rounded-xl bg-stone-100 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-stone-400/50"
+              onclick="app.goToDetail('${p.id}')"
+              class="group relative cursor-pointer overflow-hidden rounded-xl bg-stone-100 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-stone-400/50"
             >
               <div class="relative aspect-[4/5] overflow-hidden">
                 <img 
@@ -356,17 +386,14 @@
 
         html += `</div></div>`;
         container.innerHTML = html;
-
-        // Add Event Listeners to cards
-        document.querySelectorAll('.philosopher-card').forEach(card => {
-          card.addEventListener('click', () => {
-            const id = card.getAttribute('data-id');
-            app.goToDetail(id);
-          });
-        });
+        window.scrollTo(0,0);
       }
 
-      function renderDetail(detail) {
+      // 2. Render Detail View
+      function renderDetail(id) {
+        const detail = PHILOSOPHERS_DATA.find(p => p.id === id);
+        if (!detail) return renderList();
+
         const seed = encodeURIComponent(detail.name);
         const imageUrl = `https://picsum.photos/seed/${seed}/800/600`;
         
@@ -489,55 +516,23 @@
         window.scrollTo(0,0);
       }
 
-      // --- Application Controller ---
+      // --- CONTROLLER ---
       const app = {
-        init: async () => {
-          renderLoading("Gathering the great minds of history...");
-          try {
-            state.philosophers = await API.fetchList();
-            state.view = 'list';
-            renderList(state.philosophers);
-          } catch (e) {
-            state.view = 'error';
-            renderError("Failed to load the great minds. Please try again later.");
-          }
+        init: () => {
+          renderList();
         },
-
         goHome: () => {
-          state.view = 'list';
-          state.selectedId = null;
-          renderList(state.philosophers);
-          window.scrollTo(0,0);
+          renderList();
         },
-
-        goToDetail: async (id) => {
-          const summary = state.philosophers.find(p => p.id === id);
-          if (!summary) return;
-
-          state.selectedId = id;
-          state.view = 'loading';
-          renderLoading(`Consulting the archives for ${summary.name}...`);
-
-          try {
-            // Check cache
-            if (state.detailsCache[id]) {
-               renderDetail(state.detailsCache[id]);
-            } else {
-               const detail = await API.fetchDetail(summary);
-               state.detailsCache[id] = detail;
-               renderDetail(detail);
-            }
-            state.view = 'detail';
-          } catch (e) {
-            renderError("Failed to commune with the spirits of wisdom.");
-          }
+        goToDetail: (id) => {
+          renderDetail(id);
         }
       };
 
-      // Expose app to window for inline onclick handlers
+      // Expose to window
       window.app = app;
 
-      // Start
+      // Start App
       app.init();
 
     </script>
